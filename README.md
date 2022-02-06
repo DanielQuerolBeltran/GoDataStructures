@@ -1,0 +1,1 @@
+Package with Go implementation of data structures like queues, qtacks, linked lists, double linked lists, binary search trees.. and more to come.
