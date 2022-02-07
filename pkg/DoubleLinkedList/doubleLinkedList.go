@@ -30,12 +30,19 @@ func (l *DoubleLinkedList) InsertFirst(content interface{}) {
 	}
 }
 
-func (l *DoubleLinkedList) ShowHead() {
-	fmt.Printf(" %+v \n", l.head.content)
+func (l *DoubleLinkedList) ShowHead() interface{} {
+	if (l.head == nil) {
+		return nil
+	}
+	return l.head.content
 }
 
-func (l *DoubleLinkedList) ShowTail() {
-	fmt.Printf(" %+v \n", l.tail.content)
+func (l *DoubleLinkedList) ShowTail()  interface{} {
+	if (l.head == nil) {
+		return nil
+	}
+
+	return l.tail.content
 }
 
 func (l *DoubleLinkedList) InsertLast(content interface{}) {
@@ -135,7 +142,7 @@ func (l *DoubleLinkedList) ToArray() []interface{} {
 	if l.head != nil {
 		currentNode := l.head
 		for currentNode != nil {
-			arrayContent = append(arrayContent, currentNode.toStringContent())
+			arrayContent = append(arrayContent, currentNode.content)
 			currentNode = currentNode.next
 		}
 	}
