@@ -1,6 +1,13 @@
 package doublelinkedlist
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+	"reflect"
+)
+
+var ErrInvalidDate = errors.New("invalid content type")
+
 
 type Node struct {
 	prev *Node
@@ -13,7 +20,15 @@ type DoubleLinkedList struct {
 	tail *Node
 }
 
-func (l *DoubleLinkedList) InsertFirst(content interface{}) {
+func (l *DoubleLinkedList) InsertFirst(content interface{}) (error) {
+	if l.head != nil {
+		err := l.checkContentType(content)
+
+		if err != nil {
+			return err
+		}
+	}
+
 	node := Node{
 		next: l.head,
 		prev: nil,
@@ -28,6 +43,19 @@ func (l *DoubleLinkedList) InsertFirst(content interface{}) {
 	if l.tail == nil {
 		l.tail = &node
 	}
+
+	return nil
+}
+
+func (l *DoubleLinkedList) checkContentType(content interface{}) error {
+	typeNewContent := reflect.TypeOf(content)
+		typeFirstContent := reflect.TypeOf(l.head.content)
+
+		if (typeFirstContent != typeNewContent) {
+			return ErrInvalidDate
+		}
+
+		return nil
 }
 
 func (l *DoubleLinkedList) ShowHead() interface{} {
@@ -45,7 +73,15 @@ func (l *DoubleLinkedList) ShowTail()  interface{} {
 	return l.tail.content
 }
 
-func (l *DoubleLinkedList) InsertLast(content interface{}) {
+func (l *DoubleLinkedList) InsertLast(content interface{}) error {
+	if l.head != nil {
+		err := l.checkContentType(content)
+
+		if err != nil {
+			return err
+		}
+	}
+
 	node := Node{
 		next: nil,
 		prev: l.tail,
@@ -60,6 +96,8 @@ func (l *DoubleLinkedList) InsertLast(content interface{}) {
 	if l.head == nil {
 		l.head = &node
 	}
+
+	return nil
 }
 
 func (l *DoubleLinkedList) DeleteFirst() {
@@ -120,20 +158,6 @@ func (l *DoubleLinkedList) Sort() {
 
 func (n *Node) toStringContent() string {
 	return fmt.Sprintf("%v", n.content)
-}
-
-func (l *DoubleLinkedList) Display() {
-	if l.head != nil {
-		currentNode := l.head
-		for currentNode.next != nil {
-			fmt.Printf(" %+v ->", currentNode.content)
-			currentNode = currentNode.next 
-		}
-
-		fmt.Printf(" %+v \n", currentNode.content)
-	} else {
-		fmt.Println()
-	}
 }
 
 func (l *DoubleLinkedList) ToArray() []interface{} {
